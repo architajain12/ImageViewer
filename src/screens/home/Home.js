@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Header from '../../common/header/Header';
 
 class Home extends Component {
     constructor(props) {
@@ -13,7 +14,10 @@ class Home extends Component {
 
     render() {
         return (
-            <div>You have reached the Home component</div>
+            <div>
+                <Header title="Image Viewer" section="home"/>
+                <div>You have reached the Home component</div>
+            </div>
         );
     }
 }

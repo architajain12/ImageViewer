@@ -49,7 +49,7 @@ class Login extends Component{
     render(){
         return(
             <div>
-                <Header title="Image Viewer" />
+                <Header title="Image Viewer" section="login"/>
                 <div className = "card-container">
                     <Card className = "login-card">
                         <CardContent>

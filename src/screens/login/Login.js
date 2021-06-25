@@ -26,7 +26,7 @@ class Login extends Component{
     }
 
     SignedIn = () => {
-        alert('Hi, you have logged in!');
+        this.props.history.push('/home');
     }
 
     loginClickHandler = () => {

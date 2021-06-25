@@ -1,11 +1,13 @@
 import React from 'react';
+import App from './App';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Login from './screens/login/Login';
+import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.render(
-    <span>
-        <Login />
-    </span>, 
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
     document.getElementById('root')
 );

@@ -59,22 +59,22 @@ class Header extends Component{
     };
   }
 
-  closeHandler = () =>{
+  closeHandler = () => {
     this.setState({ anchorEl: null });
   }
 
-  profilePicClickHandler = (event) =>{
+  profilePicClickHandler = (event) => {
     this.setState({
       anchorEl: event.currentTarget
     })
   }
 
-  accountHandler = ()=>{
+  accountHandler = ()=> {
     this.props.accountHandler();
     this.closeHandler();
   }
 
-  logoutHandler = ()=>{
+  logoutHandler = ()=> {
     this.props.logoutHandler();
     this.closeHandler();
   }

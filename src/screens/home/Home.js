@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from '../../common/header/Header';
+import userProfilePicture from "../../assets/userProfilePicture.jpeg";
 
 class Home extends Component {
     constructor(props) {
@@ -12,10 +13,19 @@ class Home extends Component {
         }
     }
 
+    logout = () => {
+        sessionStorage.clear();
+        this.props.history.replace('/');
+    }
+
+    myAccount = () => {
+        this.props.history.replace('/profile');
+    }
+
     render() {
         return (
             <div>
-                <Header title="Image Viewer" section="home"/>
+                <Header title="Image Viewer" section="Home" userProfileUrl={userProfilePicture} logoutHandler={this.logout} accountHandler={this.myAccount}/>
                 <div>You have reached the Home component</div>
             </div>
         );

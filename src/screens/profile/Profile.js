@@ -17,8 +17,8 @@ import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIconBorder from '@material-ui/icons/FavoriteBorder';
+import FavoriteIconFill from '@material-ui/icons/Favorite';
 
 
 const styles = {
@@ -107,11 +107,13 @@ class Profile extends Component {
     }
 
     openImageModalHandler = (event) => {
-        var result = this.state.postsData.find(item => {
+        var image = this.state.postsData.find(item => {
             return item.id === event.target.id
         })
-        console.log(result);
-        this.setState({ imageModalOpen: true, currentPost: result });
+        image.likes = {
+          count: 12
+        }
+        this.setState({ imageModalOpen: true, currentPost: image });
     }
 
     closeImageModalHandler = () => {
@@ -166,10 +168,30 @@ class Profile extends Component {
       this.props.history.replace('/');
     }
 
-    likeButtonHandler = (imageId) => {
-      console.log('Like Button Pressed!');
-      this.setState({ likeCounts: this.state.likeCounts + 1});
+    likeButtonHandler = (id) =>{
+      console.log('like id',id);
+      var foundItem = this.state.currentPost;
+
+      if (typeof foundItem !== undefined) {
+        if (!this.state.likeSet.has(id)) {
+          foundItem.likes.count++;
+          this.setState(({likeSet}) => ({
+            likeSet:new Set(likeSet.add(id))
+          }))
+        }else {
+          foundItem.likes.count--;
+          this.setState(({likeSet}) =>{
+            const newLike = new Set(likeSet);
+            newLike.delete(id);
+
+            return {
+              likeSet:newLike
+            };
+          });
+        }
+      }
     }
+
 
     render() {
         let postsData = this.state.postsData;
@@ -266,15 +288,20 @@ class Profile extends Component {
                             })}
                           </div>
                           <div>
-                          <div className="right-botton row">
-                              <IconButton className="like-button" aria-label="like-button" onClick={() => this.likeButtonHandler(this.state.currId)}>
-                                {this.state.currLikeStatus ? <FavoriteIcon className="image-liked-icon" fontSize="large" /> : <FavoriteBorderIcon className="image-like-icon" fontSize="large" />}
+
+                            <div className = "row">
+                              <IconButton aria-label = "Like this post" onClick = {this.likeButtonHandler.bind(this, this.state.currentPost.id)}>
+                                {this.state.likeSet.has(this.state.currentPost.id) && <FavoriteIconFill style = {{color:'red'}}/>}
+                                {!this.state.likeSet.has(this.state.currentPost.id) && <FavoriteIconBorder/>}
                               </IconButton>
-                              {
-                                this.state.likeCounts === 1 ?
-                                  <span> {this.state.likeCounts} like </span> : <span> {this.state.likeCounts} likes </span>
-                              }
+                              <Typography component = "p">
+                                {
+                                  this.state.currentPost.likes.count === 1 ?
+                                    <span> {this.state.currentPost.likes.count} like </span> : <span> {this.state.currentPost.likes.count} likes </span>
+                                }
+                              </Typography>
                             </div>
+
                             <div className = "row">
                               <FormControl style = {{flexGrow:1}}>
                                 <InputLabel htmlFor = "comment">Add Comment</InputLabel>
@@ -286,9 +313,9 @@ class Profile extends Component {
                                 </Button>
                               </FormControl>
                             </div>
+
                           </div>
                         </div>
-
                       </div>
                     </div>
                 </Modal>}

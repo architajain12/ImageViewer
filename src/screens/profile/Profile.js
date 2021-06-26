@@ -13,9 +13,12 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import IconButton from '@material-ui/core/IconButton';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 
 
 const styles = {
@@ -64,7 +67,9 @@ class Profile extends Component {
             postsData: null,
             imageModalOpen: false,
             likeSet: new Set(),
-            comments: {}
+            comments: {},
+            likeCounts: 0,
+            currLikeStatus: false
         }
     }
 
@@ -159,6 +164,11 @@ class Profile extends Component {
     logout = () => {
       sessionStorage.clear();
       this.props.history.replace('/');
+    }
+
+    likeButtonHandler = (imageId) => {
+      console.log('Like Button Pressed!');
+      this.setState({ likeCounts: this.state.likeCounts + 1});
     }
 
     render() {
@@ -256,6 +266,15 @@ class Profile extends Component {
                             })}
                           </div>
                           <div>
+                          <div className="right-botton row">
+                              <IconButton className="like-button" aria-label="like-button" onClick={() => this.likeButtonHandler(this.state.currId)}>
+                                {this.state.currLikeStatus ? <FavoriteIcon className="image-liked-icon" fontSize="large" /> : <FavoriteBorderIcon className="image-like-icon" fontSize="large" />}
+                              </IconButton>
+                              {
+                                this.state.likeCounts === 1 ?
+                                  <span> {this.state.likeCounts} like </span> : <span> {this.state.likeCounts} likes </span>
+                              }
+                            </div>
                             <div className = "row">
                               <FormControl style = {{flexGrow:1}}>
                                 <InputLabel htmlFor = "comment">Add Comment</InputLabel>

@@ -1,0 +1,12 @@
+.user-details {
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center
+}

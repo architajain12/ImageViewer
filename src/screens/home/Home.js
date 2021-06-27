@@ -15,6 +15,9 @@ import Divider from '@material-ui/core/Divider';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { UserInfo } from "../../assets/UserInfo";
+import FormControl from '@material-ui/core/FormControl';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 
 class Home extends Component {
@@ -26,8 +29,7 @@ class Home extends Component {
         this.state = {
             profilePicture: null,
             likeSet: new Set(),
-            comments: {},
-            currrentComment: "",
+            comments: [],
             filteredData: [],
             userInfo: [{}],
             imageDetails: [],
@@ -43,19 +45,20 @@ class Home extends Component {
         this.props.history.replace('/profile');
     }
 
-    addCommentClickHandler = (id) => {
-        if (this.state.currentComment === "" || typeof this.state.currentComment === undefined) {
-          return;
+    addCommentClickHandler = (index) => {
+        var textfield = document.getElementById("comment-" + index);
+        if (textfield.value == null || textfield.value.trim() === "") {
+            return;
         }
-        let commentList = this.state.comments.hasOwnProperty(id)?
-          this.state.comments[id].concat(this.state.currentComment): [].concat(this.state.currentComment);
-        this.setState({
-          comments:{
-            ...this.state.comments,
-            [id]: commentList
-          },
-          currentComment:''
-        })
+        let currentComment = this.state.comments;
+        if (currentComment[index] === undefined) {
+            currentComment[index] = [textfield.value];
+        } else {
+            currentComment[index] = currentComment[index].concat([textfield.value]);
+        }
+
+        textfield.value = '';
+        this.setState({'comments': currentComment})
     }
 
     async componentDidMount() {
@@ -84,7 +87,7 @@ class Home extends Component {
                 <Container className = 'posts-container'>
                         <Grid container justify = 'flex-start' direction = 'row' alignContent = 'center' spacing = {3}>
                             {
-                                (this.state.filteredData || []).map((post) => (
+                                (this.state.filteredData || []).map((post, index) => (
                                     <Grid item xs = {6} key = { post.id }>
                                         <Card key={ post.id } >
                                             <CardHeader avatar = { <Avatar variant = "circle" src = { userProfilePicture } /> }
@@ -95,9 +98,35 @@ class Home extends Component {
                                             <CardContent>
                                                 <div> {post.caption} </div> <br />
                                                 <div className='hashtags'> {post.tags} </div> <br />
+                                                <div>
+                                                {
+                                                    this.state.comments[index] ?
+                                                        (this.state.comments)[index].map((comment, index) =>
+                                                        (
+                                                            <p key={index}>
+                                                                <strong>{post.username}</strong>: {comment}
+                                                            </p>
+                                                        ))
+                                                        :
+                                                        <p></p>
+                                                }
+                                                </div>
+                                                <div className = 'comments'>
+                                                    <FormControl className = 'comment-text'>
+                                                        <TextField id = {'comment-' + index} label = "Add a comment"/>
+                                                    </FormControl>
+                                                    <div>
+                                                        <FormControl>
+                                                            <Button variant = 'contained' color = 'primary' onClick={() => this.addCommentClickHandler(index)}>
+                                                                ADD
+                                                            </Button>
+                                                        </FormControl>
+                                                    </div>
+                                                </div>
                                             </CardContent>
+
                                         </Card>
-                                        </Grid>
+                                    </Grid>
                                 ))
                             }
                         </Grid>

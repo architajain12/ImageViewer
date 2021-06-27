@@ -5,3 +5,12 @@
 .hashtags {
     color:#1284cc;
 }
+
+.comments {
+    display: flex;
+}
+
+.comment-text {
+    width: 80%;
+    margin-left: 5%;
+}

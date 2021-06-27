@@ -67,9 +67,7 @@ class Profile extends Component {
             postsData: null,
             imageModalOpen: false,
             likeSet: new Set(),
-            comments: {},
-            likeCounts: 0,
-            currLikeStatus: false
+            comments: {}
         }
     }
 
@@ -87,7 +85,7 @@ class Profile extends Component {
                 followers: UserInfo.followers,
                 posts: UserInfo.totalPosts,
                 postsData: jsonResponse.data,
-                fullName: UserInfo.fullName,
+                fullName: UserInfo.fullName
             });
         }).catch((error) => {
             console.log('Error in getting posts', error);
@@ -111,7 +109,7 @@ class Profile extends Component {
             return item.id === event.target.id
         })
         image.likes = {
-          count: 12
+          count: 1200
         }
         this.setState({ imageModalOpen: true, currentPost: image });
     }
@@ -135,7 +133,7 @@ class Profile extends Component {
       this.setState({
         comments:{
           ...this.state.comments,
-          [id]:commentList
+          [id]: commentList
         },
         currentComment:''
       })
@@ -213,7 +211,7 @@ class Profile extends Component {
                         </div>
                         <br />
                         <div style = {{fontSize: "large"}}> {this.state.fullName}
-                        <Button mini color="secondary" variant = "fab" aria-label="Edit" style = {{ backgroundColor: "#ff5050",  borderRadius: "50%", width:"10px", marginLeft: "25px"}} onClick = {this.openEditModalHandler}>
+                        <Button mini color="secondary" variant = "fab" aria-label="Edit" style = {{ backgroundColor: "#ff5050",  borderRadius: "50%", marginLeft: "25px"}} onClick = {this.openEditModalHandler}>
                             <EditIcon/>
                         </Button>
                         </div>
@@ -233,10 +231,10 @@ class Profile extends Component {
                     </span>
                 </div>
                 {this.state.postsData != null &&
-                    <GridList cellHeight={'auto'} cols={3} style={{ padding: "40px" }}>
+                    <GridList cellHeight = {'auto'} cols = {3} style = {{ padding: "40px" }}>
                         {postsData && postsData.map(media => (
-                            <GridListTile key={media.id} style={{cursor: "pointer"}}>
-                                <CardMedia id={media.id} image={media.media_url} title={media.caption} style={styles.postsStyle} onClick={this.openImageModalHandler} />
+                            <GridListTile key = {media.id} style = {{cursor: "pointer"}}>
+                                <CardMedia id = {media.id} image={media.media_url} title = {media.caption} style = {styles.postsStyle} onClick = {this.openImageModalHandler} />
                             </GridListTile>
                         ))}
 
@@ -259,14 +257,14 @@ class Profile extends Component {
                       <div style={{display:'flex', flexDirection:'column', width:'50%', padding:10}}>
                         <div style={{borderBottom:'2px solid #f2f2f2',display:'flex', flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
                           <Avatar
-                            alt="User Image"
-                            src={userProfilePicture}
+                            alt = "User's Profile Picture"
+                            src = {userProfilePicture}
                             style={{width: "50px", height: "50px",margin:'10px'}}/>
                             <Typography component="p">
                               {this.state.username}
                             </Typography>
                         </div>
-                        <div style={{display:'flex', height:'100%', flexDirection:'column', justifyContent:'space-between'}}>
+                        <div style = {{display:'flex', height:'100%', flexDirection:'column', justifyContent:'space-between'}}>
                           <div>
                             <Typography component="p">
                               {this.state.currentPost.caption}
@@ -276,11 +274,11 @@ class Profile extends Component {
                             </Typography>
                             {this.state.comments.hasOwnProperty(this.state.currentPost.id) && this.state.comments[this.state.currentPost.id].map((comment, index)=>{
                               return(
-                                <div key={index} className="row">
-                                  <Typography component="p" style={{fontWeight:'bold'}}>
+                                <div key = {index} className = "row">
+                                  <Typography component = "p" style = {{fontWeight:'bold'}}>
                                     {sessionStorage.getItem('username')}:
                                   </Typography>
-                                  <Typography component="p" >
+                                  <Typography component = "p" >
                                     {comment}
                                   </Typography>
                                 </div>

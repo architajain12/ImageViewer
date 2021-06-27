@@ -3,5 +3,6 @@ export const UserInfo = {
     following: 200,
     followers: 400,
     totalPosts: 3,
-    fullName: "Test User"
+    fullName: "Test User",
+    tags: "#Instagram #Food"
 }

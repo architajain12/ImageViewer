@@ -27,7 +27,6 @@ class Home extends Component {
         }
         this.state = {
             profilePicture: null,
-            likeSet: new Set(),
             comments: [],
             filteredData: [],
             userInfo: [{}],

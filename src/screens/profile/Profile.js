@@ -167,17 +167,15 @@ class Profile extends Component {
     }
 
     likeButtonHandler = (id) =>{
-      console.log('like id',id);
-      var foundItem = this.state.currentPost;
-
-      if (typeof foundItem !== undefined) {
+      var foundPost = this.state.currentPost;
+      if (typeof foundPost !== undefined) {
         if (!this.state.likeSet.has(id)) {
-          foundItem.likes.count++;
+          foundPost.likes.count++;
           this.setState(({likeSet}) => ({
             likeSet:new Set(likeSet.add(id))
           }))
         }else {
-          foundItem.likes.count--;
+          foundPost.likes.count--;
           this.setState(({likeSet}) =>{
             const newLike = new Set(likeSet);
             newLike.delete(id);
@@ -242,33 +240,31 @@ class Profile extends Component {
                 }
                 {this.state.currentPost != null &&
                 <Modal
-                    aria-labelledby="image-modal"
-                    aria-describedby="modal to show image details"
+                    aria-labelledby = "image-modal"
+                    aria-describedby = "Modal displaying Instagram post"
                     open={this.state.imageModalOpen}
-                    onClose={this.closeImageModalHandler}
-                    style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
-                    <div style={{display:'flex',flexDirection:'row',backgroundColor: "#fff",width:'70%',height:'70%'}}>
-                      <div style={{width:'50%',padding:10}}>
-                        <img style={{height:'100%',width:'100%'}}
-                          src={this.state.currentPost.media_url}
-                          alt={this.state.currentPost.caption} />
+                    onClose = {this.closeImageModalHandler}
+                    style = {{display:'flex',justifyContent:'center',alignItems:'center'}}>
+                    <div style = {{display:'flex',flexDirection:'row',backgroundColor: "#fff",width:'70%',height:'70%'}}>
+                      <div style = {{width:'50%',padding:10}}>
+                        <img style = {{height:'100%',width:'100%'}}
+                          src = {this.state.currentPost.media_url}
+                          alt = {this.state.currentPost.caption} />
                       </div>
 
-                      <div style={{display:'flex', flexDirection:'column', width:'50%', padding:10}}>
-                        <div style={{borderBottom:'2px solid #f2f2f2',display:'flex', flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
+                      <div style = {{display:'flex', flexDirection:'column', width:'50%', padding:10}}>
+                        <div style = {{borderBottom:'2px solid #f2f2f2',display:'flex', flexDirection:'row',justifyContent:'flex-start',alignItems:'center'}}>
                           <Avatar
                             alt = "User's Profile Picture"
                             src = {userProfilePicture}
-                            style={{width: "50px", height: "50px",margin:'10px'}}/>
+                            style = {{width: "50px", height: "50px",margin:'10px'}}/>
                             <Typography component="p">
                               {this.state.username}
                             </Typography>
                         </div>
                         <div style = {{display:'flex', height:'100%', flexDirection:'column', justifyContent:'space-between'}}>
                           <div>
-                            <Typography component="p">
-                              {this.state.currentPost.caption}
-                            </Typography>
+                            <Typography component = "p"> {this.state.currentPost.caption} </Typography>
                             <Typography style={styles.hashtagStyle} component="p" >
                               {hashtags.join(' ')}
                             </Typography>

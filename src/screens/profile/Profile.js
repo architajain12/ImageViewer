@@ -109,7 +109,7 @@ class Profile extends Component {
             return item.id === event.target.id
         })
         image.likes = {
-          count: 1200
+          count: Math.round(Math.random() * 250) + 12
         }
         this.setState({ imageModalOpen: true, currentPost: image });
     }

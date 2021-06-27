@@ -68,6 +68,18 @@ class Home extends Component {
         this.setState({'comments': currentComment})
     }
 
+    searchInputHandler = (searchInput) => {
+        let filteredData = this.state.imagesData;
+        filteredData = filteredData.filter((post) => {
+            let string = post.caption.toLowerCase();
+            let subString = searchInput.toLowerCase();
+            return string.includes(subString);
+        })
+        this.setState({
+            filteredData
+        })
+    }
+
     async componentDidMount() {
         let userInfo = URLConfiguration.allMediaUrl + "&access_token=" + sessionStorage.getItem("access-token");
         let imageDetails = URLConfiguration.baseUrl + "/$mediaId?fields=id,media_type,media_url,username,timestamp&access_token=" + sessionStorage.getItem("access-token");
@@ -92,7 +104,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Header title = "Image Viewer" section = "Home" userProfileUrl = {userProfilePicture} logoutHandler = {this.logout} accountHandler = {this.myAccount}/>    
+                <Header title = "Image Viewer" section = "Home" userProfileUrl = {userProfilePicture} logoutHandler = {this.logout} accountHandler = {this.myAccount} searchHandler = {this.searchInputHandler}/>    
                 <Container className = 'posts-container'>
                         <Grid container justify = 'flex-start' direction = 'row' alignContent = 'center' spacing = {3}>
                             {

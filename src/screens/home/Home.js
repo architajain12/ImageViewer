@@ -3,8 +3,6 @@ import Header from '../../common/header/Header';
 import './Home.css';
 import userProfilePicture from "../../assets/userProfilePicture.jpeg";
 import { URLConfiguration } from "../../assets/APIdetails";
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -18,7 +16,8 @@ import { UserInfo } from "../../assets/UserInfo";
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
+import FavoriteBorderIcon from'@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 class Home extends Component {
     constructor(props) {
@@ -33,6 +32,7 @@ class Home extends Component {
             filteredData: [],
             userInfo: [{}],
             imageDetails: [],
+            imagesData: []
         }
     }
 
@@ -43,6 +43,13 @@ class Home extends Component {
 
     myAccount = () => {
         this.props.history.replace('/profile');
+    }
+
+    likeButtonClickHandler = (post) => {
+        let index = post.index;
+        let likedImages = this.state.imagesData;
+        likedImages[index].hasLiked = !likedImages[index].hasLiked;
+        this.setState({ 'imagesData': likedImages })
     }
 
     addCommentClickHandler = (index) => {
@@ -72,12 +79,14 @@ class Home extends Component {
             let post = await response.json();
             postsData[it].index = it;
             postsData[it].media_url = post.media_url;
+            postsData[it].hasLiked = false;
+            postsData[it].likes = Math.round(Math.random() * 250) + 12;
             postsData[it].username = post.username;
             postsData[it].timestamp = post.timestamp;
             postsData[it].tags = UserInfo.tags; 
         }
-        this.setState({ userImages: postsData });
         this.setState({ filteredData: postsData.filter(details => true) });  
+        this.setState({ imagesData: postsData });
     }
 
     render() {
@@ -111,10 +120,22 @@ class Home extends Component {
                                                         <p></p>
                                                 }
                                                 </div>
+
+                                                <div className='likes-section'>
+                                                    {
+                                                        post.hasLiked ? <FavoriteIcon style={{ color: "red" }} onClick={() => this.likeButtonClickHandler(post)} /> :
+                                                            <FavoriteBorderIcon onClick={() => this.likeButtonClickHandler(post)} />
+                                                    }
+                                                    <Typography>
+                                                        <span> &nbsp;{post.hasLiked ? (post.likes + 1) + ' likes' : post.likes + ' likes'}</span>
+                                                    </Typography>
+                                                </div>
+
                                                 <div className = 'comments'>
                                                     <FormControl className = 'comment-text'>
                                                         <TextField id = {'comment-' + index} label = "Add a comment"/>
                                                     </FormControl>
+                                                    &nbsp;
                                                     <div>
                                                         <FormControl>
                                                             <Button variant = 'contained' color = 'primary' onClick={() => this.addCommentClickHandler(index)}>
